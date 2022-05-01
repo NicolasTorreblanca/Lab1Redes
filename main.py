@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.fftpack as fourier
 
-
 nombre_ArchivoNico = "AudioNico_Redes.wav"
 
 winsound.PlaySound(nombre_ArchivoNico,winsound.SND_FILENAME)
