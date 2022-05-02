@@ -1,11 +1,11 @@
 #Laboratorio 1 Redes de Computadores
-#Fecha de Entrega : 02-05-2022
+#Date : 02-05-2022
 
-#Autores :
+#Authors :
 #       -Rodrigo Escobar Z.
 #       -Nicolás Torreblanca M.
 
-# ---- Librerias ----
+# ---- Librarys ----
 from ast import For
 from math import pi
 from traceback import print_tb
@@ -16,233 +16,333 @@ import matplotlib.pyplot as plt
 import scipy.fftpack as fourier
 import scipy.signal as segnal
 
-# ---- Item 1 ----
-# Se definen los nombres de las notas de voz que se desean leer
-nombre_ArchivoRodrigo = "AudioRodrigo_Redes.wav"
-nombre_ArchivoNico = "AudioNico_Redes.wav"
-# Reproducimos el sonido que vamos a cargar
+# ---- Item 1 ---
+
+# Define the file Names that are going to be read
+
+fileName_Rodrigo = "AudioRodrigo_Redes.wav"
+fileName_Nico = "AudioNico_Redes.wav"
+
+# Play the audio
+
 #winsound.PlaySound(nombre_ArchivoRodrigo, winsound.SND_FILENAME)
 #winsound.PlaySound(nombre_ArchivoNico, winsound.SND_FILENAME)
 
 # ---- Item 2 ----
-# Leemos el archivo de audio del directorio
-FsRodrigo, dataRodrigo = waves.read(nombre_ArchivoRodrigo)
+
+# We read the files previously defined
+
+FsRodrigo, dataRodrigo = waves.read(fileName_Rodrigo)
 AudioRodrigo = dataRodrigo[:,0]
-FsNico, dataNico = waves.read(nombre_ArchivoNico)
+FsNico, dataNico = waves.read(fileName_Nico)
 AudioNico = dataNico[:,0]
 
-# Tomamos la longitud de la señal
-largoAudioRodrigo = len(AudioRodrigo)
-largoAudioNico = len(AudioNico)
+# Then, we take the length of the signal
 
-# Definimos un vector de tiempo de la misma longitud de la señal
-arregloRodrigo = np.arange(0,largoAudioRodrigo)/FsRodrigo
-arregloNico = np.arange(0,largoAudioNico)/FsNico
+lengthAudioRodrigo = len(AudioRodrigo)
+lengthAudioNico = len(AudioNico)
+
+# The, we define a vector of the same length of time
+
+timeArrayRodrigo = np.arange(0,lengthAudioRodrigo)/FsRodrigo
+timeArrayNico = np.arange(0,lengthAudioNico)/FsNico
 
 # ---- Item 3 ----
-# ---- Graficas Tiempo ----
-fig,tiempoRodrigo = plt.subplots()
-plt.plot(arregloRodrigo,AudioRodrigo)
+
+# ---- Time Graphs ----
+
+# We plot a graph for each audio
+
+fig,timeRodrigo = plt.subplots()
+plt.plot(timeArrayRodrigo,AudioRodrigo)
 plt.title('Audio Rodrigo')
-plt.xlabel('Tiempo(S)')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
-fig,tiempoNico = plt.subplots()
-plt.plot(arregloNico,AudioNico)
+fig,timeNico = plt.subplots()
+plt.plot(timeArrayNico,AudioNico)
 plt.title('Audio Nicolás')
-plt.xlabel('Tiempo(S)')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
 
 # ---- Item 4 ----
-# ---- Transformadas de Fourier ----
-# Audio Rodrigo
-transformadaR = fourier.fft(AudioRodrigo)
-preInversaR = transformadaR
-absTransformadaR = abs(transformadaR)
-absTransformadaR = absTransformadaR[0:largoAudioRodrigo//2]
-arregloTransformadaR = (FsRodrigo/largoAudioRodrigo)*np.arange(0,largoAudioRodrigo//2)
-fig,frecuenciaRodrigo = plt.subplots()
-plt.plot(arregloTransformadaR,absTransformadaR)
-plt.title('Transformada de Audio Rodrigo')
-plt.xlabel('Frecuencia(Hz)')
-plt.ylabel('Amplitud')
 
-# Audio Nicolás
-transformadaN = fourier.fft(AudioNico)
-preInversaN = transformadaN
-absTransformadaN = abs(transformadaN)
-absTransformadaN = absTransformadaN[0:largoAudioNico//2]
-arregloTransformadaN = (FsNico/largoAudioNico)*np.arange(0,largoAudioNico//2)
-fig,frecuenciaNico = plt.subplots()
-plt.plot(arregloTransformadaN,absTransformadaN)
-plt.title('Transformada de Audio Nicolás')
-plt.xlabel('Frecuencia(Hz)')
-plt.ylabel('Amplitud')
+# ---- Fourier Transforms ----
 
-# ---- Transformadas de Fourier Inversa ----
-# Inversa Rodrigo
-inversaRodrigo = fourier.ifft(preInversaR, len(preInversaR))
-fig,tiempoInversaRodrigo = plt.subplots()
-plt.plot(arregloRodrigo,inversaRodrigo)
-plt.title('Fourier Inversa de Rodrigo')
-plt.xlabel('Tiempo(S)')
+# Transform for Audio Rodrigo
+# Apply the Transform Using FFT(Fourier Fast Transform)
+# Then, we compute the absolute value of the transform
+# Also we create an array to Store to plot the Frequency
+
+transformR = fourier.fft(AudioRodrigo)
+preInverseR = transformR
+abstransformR = abs(transformR)
+abstransformR = abstransformR[0:lengthAudioRodrigo//2]
+arraytransformR = (FsRodrigo/lengthAudioRodrigo)*np.arange(0,lengthAudioRodrigo//2)
+fig,frequencyRodrigo = plt.subplots()
+plt.plot(arraytransformR,abstransformR)
+plt.title('Fourier Transform of Audio Rodrigo')
+plt.xlabel('Frequency(Hz)')
+plt.ylabel('Amplitude')
+
+# We repeat the same Process For Nicolas
+
+transformN = fourier.fft(AudioNico)
+preInverseN = transformN 
+abstransformN  = abs(transformN)
+abstransformN = abstransformN[0:lengthAudioNico//2]
+arraytransformN  = (FsNico/lengthAudioNico)*np.arange(0,lengthAudioNico//2)
+fig,frequencyNico = plt.subplots()
+plt.plot(arraytransformN ,abstransformN)
+plt.title('Fourier Transform of Audio Nicolás')
+plt.xlabel('Frequency(Hz)')
+plt.ylabel('Amplitude')
+
+# ---- Fourier Inverses ----
+
+# We compute the fourier inverse for audio Rodrigo 
+# In this case, we call the function ifft to make the inverse
+
+inverseRodrigo = fourier.ifft(preInverseR, len(preInverseR))
+fig,timeInverseRodrigo = plt.subplots()
+plt.plot(timeArrayRodrigo,inverseRodrigo)
+plt.title('Fourier Inverse of Audio Rodrigo')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
 
-# Inversa Nicolás
-inversaNico = fourier.ifft(preInversaN, len(preInversaN))
-fig,tiempoInversaNico = plt.subplots()
-plt.plot(arregloNico,inversaNico)
-plt.title('Fourier Inversa de Nicolás')
-plt.xlabel('Tiempo(S)')
+# Then, We do the same for audio Nicolas 
+
+inverseNico = fourier.ifft(preInverseN, len(preInverseN))
+fig,timeInverseNico = plt.subplots()
+plt.plot(timeArrayNico,inverseNico)
+plt.title('Fourier Inverse of Audio de Nicolás')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
 
 # ---- Item 5 ----
-# ---- Espectrograma ----
-fig, espectrogramaR = plt.subplots()
-espectrogramaR.set_title("Espectrograma de Audio Rodrigo")
-Pxx, freqs, bins, imR = espectrogramaR.specgram (AudioRodrigo, NFFT=1024, Fs=FsRodrigo, noverlap=512)
+
+# ---- Spectogram ----
+
+# Plotting an spectogram for each audio
+
+# One for rodrigo
+
+fig, spectrogramR = plt.subplots()
+spectrogramR.set_title("Spectrogram of Audio Rodrigo")
+Pxx, freqs, bins, imR = spectrogramR.specgram (AudioRodrigo, NFFT=1024, Fs=FsRodrigo, noverlap=512)
 fig.colorbar(imR)
-plt.xlabel('Tiempo(S)')
-plt.ylabel('Frecuencia(Hz)')
-fig, espectrogramaN = plt.subplots()
-espectrogramaN.set_title("Espectrograma de Audio Nicolás")
-Pxx, freqs, bins, imN = espectrogramaN.specgram(AudioNico, NFFT=1024, Fs=FsNico, noverlap=512)
+plt.xlabel('Time(S)')
+plt.ylabel('Frequency(Hz)')
+
+# Another one for Nicolas 
+
+fig, spectrogramN = plt.subplots()
+spectrogramN.set_title("Spectrogram of Audio Nicolás")
+Pxx, freqs, bins, imN = spectrogramN.specgram(AudioNico, NFFT=1024, Fs=FsNico, noverlap=512)
 fig.colorbar(imN)
-plt.xlabel('Tiempo(S)')
-plt.ylabel('Frecuencia(Hz)')
+plt.xlabel('Time(S)')
+plt.ylabel('Frequency(Hz)')
 
 
 # ---- Item 7 ----
-# Se selecciona la señal de Ruido Violeta y la señal de audio de Rodrigo
-# ---- Lectura de Ruido ----
-nombre_ArchivoRuido = "Ruido Violeta.wav"
-FsRuido, dataRuido = waves.read(nombre_ArchivoRuido)
-largoAudioRuido = len(dataRuido)
-arregloRuido = np.arange(0,largoAudioRuido)/FsRuido
 
-# ---- Grafica Tiempo Ruido ----
+# We select an violet Noice for the experiment
+# This noice is going to be added to audio Rodrigo
+# In order to create a noisy Signal
+
+# ---- Noise ----
+
+# First, we read the signal 
+
+fileName_Noise = "Ruido Violeta.wav"
+FsNoise, dataNoise = waves.read(fileName_Noise)
+lengthAudioNoise = len(dataNoise)
+timeArrayNoise = np.arange(0,lengthAudioNoise)/FsNoise
+
+# ----Plotting the noise signal In time----
 fig,tiempoRuido = plt.subplots()
-plt.plot(arregloRuido,dataRuido)
-plt.title('Audio Ruido')
-plt.xlabel('Tiempo(S)')
+plt.plot(timeArrayNoise,dataNoise)
+plt.title('Audio of Noise')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
 
-# ---- Transformada de Fourier Ruido ----
-transformadaRuido = fourier.fft(dataRuido)
-preInversaRuido = transformadaRuido
-absTransformadaRuido = abs(transformadaRuido)
-absTransformadaRuido = absTransformadaRuido[0:largoAudioRuido//2]
-arregloTransformadaRuido = (FsRuido/largoAudioRuido)*np.arange(0,largoAudioRuido//2)
+# ---- Fourier Transform of Noice ----
+
+# Repeat the execution we made for audio rodrigo
+# But for the Noice previously read
+
+transformNoise = fourier.fft(dataNoise)
+preInverseNoise = transformNoise
+abstransformNoise = abs(transformNoise)
+abstransformNoise = abstransformNoise[0:lengthAudioNoise//2]
+arraytransformNoise = (FsNoise/lengthAudioNoise)*np.arange(0,lengthAudioNoise//2)
 fig,frecuenciaRuido = plt.subplots()
-plt.plot(arregloTransformadaRuido,absTransformadaRuido)
-plt.title('Transformada de Ruido')
-plt.xlabel('Frecuencia(Hz)')
-plt.ylabel('Amplitud')
+plt.plot(arraytransformNoise,abstransformNoise)
+plt.title('Fourier Transform of Noise Audio')
+plt.xlabel('Frequency(Hz)')
+plt.ylabel('Amplitude')
 
-# ---- Transformada de Fourier Inversa Ruido ----
-inversaRuido = fourier.ifft(preInversaRuido, len(preInversaRuido))
+# ---- Inverse Fourier Transform of Noise----
+
+inverseNoise = fourier.ifft(preInverseNoise, len(preInverseNoise))
 fig,tiempoInversaRuido = plt.subplots()
-plt.plot(arregloRuido,inversaRuido)
-plt.title('Fourier Inversa de Ruido')
-plt.xlabel('Tiempo(S)')
+plt.plot(timeArrayNoise,inverseNoise)
+plt.title('Fourier Inverse of Noise Audio')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
 
-# ---- Espectrograma Ruido ----
-fig, espectrogramaRuido = plt.subplots()
-espectrogramaRuido.set_title("Espectrograma de Ruido")
-Pxx, freqs, bins, imRuido = espectrogramaRuido.specgram(dataRuido, NFFT=1024, Fs=FsRuido, noverlap=512)
-fig.colorbar(imRuido)
-plt.xlabel('Tiempo(S)')
-plt.ylabel('Frecuencia(Hz)')
+# ---- Spectogram of Noise ----
+fig, spectrogramNoise = plt.subplots()
+spectrogramNoise.set_title("Spectrogram of Noise Audio")
+Pxx, freqs, bins, imNoise = spectrogramNoise.specgram(dataNoise, NFFT=1024, Fs=FsNoise, noverlap=512)
+fig.colorbar(imNoise)
+plt.xlabel('Time(S)')
+plt.ylabel('Frequency(Hz)')
 
 # ---- Generación Señal Ruidosa ----
-ruidoRecortado = []
+
+# A task given is to create a signal that contains
+# the noise and one of the audios readed.
+
+# In order to achieve this, we create an array
+# an store every element of the noise in order
+# to create an array that has the same length of
+# the array of audio.
+
+
+cuttedNoise = []
 i = 0
 while i < len(AudioRodrigo):
-    ruidoRecortado.append(dataRuido[i])
+    cuttedNoise.append(dataNoise[i])
     i = i + 1
-senalRuidosa = ruidoRecortado + AudioRodrigo
-largoSenalRuidosa = len(senalRuidosa)
-arregloSenalRuidosa= np.arange(0,largoSenalRuidosa)/FsRodrigo
 
-# ---- Grafica Tiempo Señal Ruidosa ----
-fig,tiempoSenalRuidosa = plt.subplots()
-plt.plot(arregloSenalRuidosa,senalRuidosa)
-plt.title('Audio Señal Ruidosa')
-plt.xlabel('Tiempo(S)')
+# With this achieved, we can create the noisySignal
+# A signal that contains both Audio of one Author and
+# The Noise
+
+noisySignal = cuttedNoise + AudioRodrigo
+lengthNoisySignal = len(noisySignal)
+arrayNoisySignal= np.arange(0,lengthNoisySignal)/FsRodrigo
+
+# ---- Plotting the Noisy Signal----
+
+fig,timeNoisySignal = plt.subplots()
+plt.plot(arrayNoisySignal,noisySignal)
+plt.title('Noisy Signal')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
 
-# ---- Transformada de Fourier Señal Ruidosa ----
-transformadaRuidosa = fourier.fft(senalRuidosa)
-preInversaRuidosa = transformadaRuidosa
-absTransformadaRuidosa = abs(transformadaRuidosa)
-absTransformadaRuidosa = absTransformadaRuidosa[0:largoSenalRuidosa//2]
-arregloTransformadaRuidosa= (FsRodrigo/largoSenalRuidosa)*np.arange(0,largoSenalRuidosa//2)
+# We repeat the execution made with the others audios.
+# To be more accurate, we make an Fourier Transform
+# Fourier Inverse and Spectogram of the Noisy Signal
+
+# ---- Fourier Transform of Noisy Signal----
+
+transformNoisySignal = fourier.fft(noisySignal)
+preInverseNoisySignal = transformNoisySignal 
+absTransformNoisySignal = abs(transformNoisySignal)
+absTransformNoisySignal = absTransformNoisySignal[0:lengthNoisySignal//2]
+arrayTransformNoisySignal= (FsRodrigo/lengthNoisySignal)*np.arange(0,lengthNoisySignal//2)
 fig,bfx = plt.subplots()
-plt.plot(arregloTransformadaRuidosa,absTransformadaRuidosa)
-plt.title('Transformada de Señal Ruidosa')
-plt.xlabel('Frecuencia(Hz)')
-plt.ylabel('Amplitud')
+plt.plot(arrayTransformNoisySignal,absTransformNoisySignal)
+plt.title('Fourier Transform of Noisy Signal')
+plt.xlabel('Frequency(Hz)')
+plt.ylabel('Amplitude')
 
-# ---- Transformada de Fourier Inversa Señal Ruidosa ----
-inversaRuidosa = fourier.ifft(preInversaRuidosa, len(preInversaRuidosa))
+# ---- Fourier Inverse Noisy Signal ----
+
+inverseNoisySignal = fourier.ifft(preInverseNoisySignal, len(preInverseNoisySignal))
 fig,tiempoInversaRuidosa = plt.subplots()
-plt.plot(arregloSenalRuidosa,inversaRuidosa)
-plt.title('Fourier Inversa de Señal Ruidosa')
-plt.xlabel('Tiempo(S)')
+plt.plot(arrayNoisySignal,inverseNoisySignal)
+plt.title('Fourier Inverse of Noisy Signal')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
 
-# ---- Espectrograma Señal Ruidosa ----
-fig, espectrogramaRuidosa = plt.subplots()
-espectrogramaRuidosa.set_title("Espectrograma de Señal Ruidosa")
-Pxx, freqs, bins, imRuidosa = espectrogramaRuidosa.specgram(senalRuidosa, NFFT=1024, Fs=FsRodrigo, noverlap=512)
-fig.colorbar(imRuidosa)
-plt.xlabel('Tiempo(S)')
-plt.ylabel('Frecuencia(Hz)')
+# ---- Spectrogram Noisy Signal ----
+
+fig, spectrogramnoisySignal = plt.subplots()
+spectrogramnoisySignal.set_title("Spectogram of Noisy Signal")
+Pxx, freqs, bins, imnoisySignal = spectrogramnoisySignal.specgram(noisySignal, NFFT=1024, Fs=FsRodrigo, noverlap=512)
+fig.colorbar(imnoisySignal)
+plt.xlabel('Time(S)')
+plt.ylabel('Frequency(Hz)')
 
 # ---- Item 8 ----
-# ---- Filtro ----
-cantCoeficientes = 1000
-frecuenciaCorte = 2000
-frecuenciaNormalizada = 2*frecuenciaCorte/FsRodrigo
-largoFiltro = segnal.firwin(cantCoeficientes,frecuenciaNormalizada)
-[frecuencia,amplitud] = segnal.freqz(largoFiltro, worN = 118967)
-frecuencia = FsRodrigo*frecuencia/(2*pi)
 
-# ---- Filtro en Frecuencias----
+# We utilize an filter Fir to find a new signal that filters the violet Noice
+
+# To apply the filter, we need to define this filter
+
+# ---- Filter Definition ----
+
+# We compute a number of Coeficientes and a frequency Cut
+# For the filter
+number_Coeficients = 1000
+frequencyCut = 2000
+frequencyNormalized = 2*frequencyCut/FsRodrigo
+
+# Given this parameters, we can create our filter FIR
+
+lengthFilter = segnal.firwin(number_Coeficients,frequencyNormalized)
+[frequencyFilter,amplitudeFilter] = segnal.freqz(lengthFilter, worN = 118967)
+frequencyFilter = FsRodrigo*frequencyFilter/(2*pi)
+
+# ---- Plotting our Filter----
+
 plt.figure()
-plt.plot(frecuencia, abs(amplitud))
-plt.title('Filtro FIR')
-plt.xlabel('Frecuencia(Hz)')
-plt.ylabel('Amplitud')
+plt.plot(frequencyFilter, abs(amplitudeFilter))
+plt.title('FIR Filter')
+plt.xlabel('Frequency(Hz)')
+plt.ylabel('Amplitude')
 
-# ---- Filtro Aplicado a Señal Ruidosa ----
-[frecuencia1,amplitud1] = segnal.freqz(largoFiltro, worN = 237935)
-filtradoCompleto = amplitud1 * transformadaRuidosa
-filtrado = abs(amplitud) * absTransformadaRuidosa
+# ---- Using the filter in the NoisySignal-----
+
+# Its important to know that the filter is created previously
+# is an Fourier Transform. Then we can apply the convolution
+# property of a the fourier transform of aconvolution is the result of multiply 2 
+# Fourier Transform. To create the filter we are basically making a convolution
+
+[frequencyFilterComplete,amplitudeFilterComplete] = segnal.freqz(lengthFilter, worN = 237935)
+filterComplete = amplitudeFilterComplete * transformNoisySignal
+filterHalf = abs(amplitudeFilter) * absTransformNoisySignal
+
 # absFiltrado = abs(filtrado)
 
-# ---- Transformada de Fourier Señal Filtrada ----
-fig,frecuenciaSenalFiltrada = plt.subplots()
-plt.plot(arregloTransformadaRuidosa,filtrado)
-plt.title('Transformada de Fourier de Señal Filtrada')
-plt.xlabel('Frecuencia(Hz)')
-plt.ylabel('Amplitud')
+# We plot the fourier transform obtained from the filter
 
-# ---- Transformada de Fourier Inversa de Señal Filtrada ----
-inversaFiltrada = fourier.ifft(filtradoCompleto, len(filtradoCompleto))
-fig,tiempoFiltrada = plt.subplots()
-plt.plot(arregloRodrigo,inversaFiltrada)
-plt.title('Fourier Inversa de Señal Filtrada')
-plt.xlabel('Tiempo(S)')
+# ---- Fourier Transform of filtered Signal----
+
+fig,frequencyNoisySignal = plt.subplots()
+plt.plot(arrayTransformNoisySignal,filterHalf)
+plt.title('Fourier Transform of Filtered Signal')
+plt.xlabel('Frequency(Hz)')
+plt.ylabel('Amplitude')
+
+#  Then we can apply the inverse, to get an playable audio.
+# ---- Fourier Inverse of filtered Signal----
+
+inverseFiltered = fourier.ifft(filterComplete, len(filterComplete))
+fig,timeFiltered = plt.subplots()
+plt.plot(timeArrayRodrigo,inverseFiltered)
+plt.title('Fourier Inverse of Filtered Signal')
+plt.xlabel('Time(S)')
 plt.ylabel('Audio')
 
-# ---- Espectrograma de Señal Filtrada ----
-fig, espectrogramaFiltrada = plt.subplots()
-espectrogramaFiltrada.set_title("Espectrograma de Señal Filtrada")
-Pxx, freqs, bins, imFiltrada = espectrogramaFiltrada.specgram(inversaFiltrada, NFFT=1024, Fs=FsRodrigo, noverlap=512)
+# With the inverse, we can calculate the Spectogram
+# ---- Spectogram of Filtered Signal ----
+
+
+fig, spectrogramFiltered = plt.subplots()
+spectrogramFiltered.set_title("Spectogram of Filtered Signal")
+Pxx, freqs, bins, imFiltrada = spectrogramFiltered.specgram(inverseFiltered, NFFT=1024, Fs=FsRodrigo, noverlap=512)
 fig.colorbar(imFiltrada)
-plt.xlabel('Tiempo(S)')
-plt.ylabel('Frecuencia(Hz)')
+plt.xlabel('Time(S)')
+plt.ylabel('Frequency(Hz)')
 
 # ---- Item 9 ----
-waves.write("audioFiltrado.wav", FsRodrigo, inversaFiltrada.astype(np.int16))
+
+# Also with the inverse, we have an audio that is playable for the user.
+
+waves.write("audioFiltrado.wav", FsRodrigo, inverseFiltered.astype(np.int16))
+
+# Finally we show every graph made during the evaluation.
+plt.show()
